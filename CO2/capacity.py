@@ -9,6 +9,7 @@ from matplotlib import ticker
 from matplotlib.ticker import AutoMinorLocator
 from streamlit_option_menu import option_menu
 from scipy.stats import norm
+#Desarrollo de la interfaz
 with st.sidebar:
     options = option_menu(menu_title="main menu",options=["Home", "Reservoir data"],icons=[])
 #Distribución normal Bo
