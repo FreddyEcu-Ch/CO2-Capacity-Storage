@@ -48,6 +48,7 @@ elif options == "Reservoir data":
             st.caption("*Base de datos de propiedades petrofísicas*")
             st.subheader("**Cálculo capacidad de almacenamiento**")
             df2 = bachuprob()
+            df3=df2
         elif metodo == "Zhong y Carr":
             st.subheader("**Método de Zhong y Carr**")
             #upload_file = st.sidebar.file_uploader("Sube tu documento csv:")
