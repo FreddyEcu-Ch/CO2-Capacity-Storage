@@ -70,5 +70,5 @@ def bachuprob():
     df["Densidad_CO2"] = Co2densidad()
     BO_norm = Bo()
     df["Capacidad_CO2"] = df["Densidad_CO2"] * ((df["Rf"] * df["OOIP"])/BO_norm )
-    return df=df
+    return df
 
