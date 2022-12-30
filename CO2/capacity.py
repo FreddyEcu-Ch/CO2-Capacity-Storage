@@ -41,14 +41,14 @@ elif options == "Reservoir data":
         metodo = st.selectbox("Método", ("Bachu probabilístico","Zhong y Carr"))
         if metodo == "Bachu probabilístico":
             st.subheader("**Mètodo de Bachu probabilístico**")
-            #upload_file = st.sidebar.file_uploader("Sube tu documento csv:")
+            upload_file = st.file_uploader("Sube tu documento db:")
             engine = create_engine("sqlite:///CO2/CO2_EOR1.db")
             df = pd.read_sql_query("SELECT * FROM Datos", engine)
             df
             st.caption("*Base de datos de propiedades petrofísicas*")
             st.subheader("**Cálculo capacidad de almacenamiento**")
             df2 = bachuprob()
-            df3=df2
+            df2
         elif metodo == "Zhong y Carr":
             st.subheader("**Método de Zhong y Carr**")
             #upload_file = st.sidebar.file_uploader("Sube tu documento csv:")
