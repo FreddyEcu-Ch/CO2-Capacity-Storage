@@ -1,4 +1,4 @@
-# Import Python Libraries
+#Import Python Libraries
 import streamlit as st
 from streamlit_option_menu import option_menu
 from PIL import Image
