@@ -131,6 +131,7 @@ elif options == "Reservoir data":
             st.dataframe(df1)
             st.subheader("**Mapa de los campos estudiados:**")
             st.map(df1)
+            st.success(f"{field}: {store:.3f} Mt" for field, store in zip(df["formacion"], df["capacidad"]))
         elif metodo == "Zhong y Carr":
             st.subheader("**Método de Zhong y Carr**")
             upload_file = st.file_uploader("Sube tu documento csv:")
