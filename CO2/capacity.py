@@ -16,6 +16,8 @@ st.write(
     "This application aims to calculate the geological storage capacity for oil reservoir using probabilistic methods"
     " and petrophysical input variables."
 )
+image = Image.open("Resourse/CALCA.jpg")
+st.sidebar.image(image, width=100, use_column_width=True)
 with st.sidebar:
     options = option_menu(
         "Main menu",
@@ -24,6 +26,7 @@ with st.sidebar:
         menu_icon="cast",
     )
     options
+
 image = Image.open("Resourse/ccus.jpg")
 st.image(image, width=100, use_column_width=True)
 st.caption("Proceso del proyecto Captura,uso y almacenamiento de CO2")
@@ -52,7 +55,38 @@ if options == "Home":
         """Diseñar un aplicativo web que permita calcular el almacenamiento de CO2 en yacimientos de petróleo y gas,
          utilizando métodos probabilísticos y determinísticos"""
     )
+    #Desarrollo
+    st.header("""**Metodologías utilizadas:** """)
 
+    st.markdown("""Esta aplicación presenta dos metodologías para el cálculo de almacenamiento geológico:""")
+    st.markdown("#Metodología de Bachu Deterministica")
+    st.markdown("#Metodología de Bachu Probabilistica")
+    st.markdown("#Metodología de Zhing y Carr")
+
+    st.header("""**Ecuaciones de cada metodología** """)
+
+    st.markdown("# Para la metodología de Bachu tanto deterministico como probabikistico se usó la siguiente ecuación:")
+    st.markdown("M_CO2t=ρ_CO2r*[(Rf*OOIP)/Bo-Viw+Vpw]")
+    st.markdown("Donde:")
+    st.markdown("ρ_CO2r   : Densidad de CO2 en condiciones de yacimiento [kg / m³]")
+    st.markdown("Rf: Factor de recobro")
+    st.markdown("Bo: Factor volumétrico de formación del petróleo [By/Bn]")
+    st.markdown("OOIP: Volumen de petróleo in situ [m³]")
+    st.markdown("Viw: Volumen de agua inyectado [m³]")
+    st.markdown("Vpw: Volumen de agua producido [m³]")
+
+    st.markdown("# Para la metodología de Zhong y Carr se usó la siguiente ecuación:")
+    st.markdown("M_CO2 = OOIP * B *〖ρCO〗_2 * E")
+    st.markdown("Donde:")
+    st.markdown("OOIP: Volumen de petróleo in situ [m³]")
+    st.markdown("B es el factor volumétrico de formación (m3/m3).")
+    st.markdown("〖ρCO〗_2 es la densidad del CO2 (kg/m3)")
+    st.markdown("E es el coeficiente de capacidad ")
+
+    st.header("""**PLANTILLA DE INGRESO DE DATA** """)
+    st.markdown("Se pide al usuario que la información subida a esta aplicación como datos para el cálculo de almacenamiento geológico se la realice en el siguiente esquema, para que la información pueda ser leida correctamente:")
+    image = Image.open("Resourse/formato1.jpg")
+    st.image(image, width=50, use_column_width=True)
 elif options == "Reservoir data":
     with st.sidebar:
         options = option_menu(
@@ -69,7 +103,7 @@ elif options == "Reservoir data":
         Bo = st.number_input("Valor de factor volumetrico de formación del petróleo en By/Bn :")
         st.subheader("Capacidad de almacenamiento en Mt:")
         c = bachu(densidad, Rf, OOIP, Bo)
-        st.success(c)
+        st.success(f"La capacidad de almacenamiento de este reservorio es: {c:.3f} Mt")
     elif options == "Probabilistic":
         st.subheader("**Seleccione el método:**")
         metodo = st.selectbox("Método", ("Bachu probabilístico", "Zhong y Carr"))
@@ -90,6 +124,13 @@ elif options == "Reservoir data":
                                    xaxis=dict(tickmode='linear', dtick=1))
             fig_refi.update_traces(textfont_size=16, textangle=0)
             st.plotly_chart(fig_refi)
+            st.subheader("**Mapa con coordenadas de los campos**")
+            upload_file = st.file_uploader("Sube tu documento csv con las coordenadas de los campos:")
+            df1 = pd.read_csv(upload_file)
+            st.subheader("**Los datos de coordenadas ingresados son:**")
+            st.dataframe(df1)
+            st.subheader("**Mapa de los campos estudiados:**")
+            st.map(df1)
         elif metodo == "Zhong y Carr":
             st.subheader("**Método de Zhong y Carr**")
             upload_file = st.file_uploader("Sube tu documento csv:")
@@ -107,3 +148,10 @@ elif options == "Reservoir data":
                                    xaxis=dict(tickmode='linear', dtick=1))
             fig_refi.update_traces(textfont_size=16, textangle=0)
             st.plotly_chart(fig_refi)
+            st.subheader("**Mapa con coordenadas de los campos**")
+            upload_file = st.file_uploader("Sube tu documento csv con las coordenadas de los campos:")
+            df1 = pd.read_csv(upload_file)
+            st.subheader("**Los datos de coordenadas ingresados son:**")
+            st.dataframe(df1)
+            st.subheader("**Mapa de los campos estudiados:**")
+            st.map(df1)
