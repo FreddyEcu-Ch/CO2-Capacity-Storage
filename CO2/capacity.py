@@ -11,7 +11,7 @@ icon = Image.open("Resourse/logo.jpg")
 st.set_page_config(
     page_title=" App Capacidad de almacenamiento Geológico", page_icon=icon
 )
-st.title("Geological CO2 Storage App")
+st.title("**Geological CO2 Storage App**")
 st.write(
     "This application aims to calculate the geological storage capacity for oil reservoir using probabilistic methods"
     " and petrophysical input variables."

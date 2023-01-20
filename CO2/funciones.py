@@ -3,7 +3,7 @@ import numpy as np
 import sympy as sym
 import pandas as pd
 from sqlalchemy import create_engine
-#Distribución normal Bo
+#Distribución normal B oil
 def Bo():
     BO_norm = norm.rvs(loc=1.5, scale=0.5, size=3)
     BO_norm = np.where(BO_norm < 1, 1, BO_norm)
