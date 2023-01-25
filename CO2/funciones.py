@@ -1,3 +1,5 @@
+import random
+
 from scipy.stats import norm
 import numpy as np
 import sympy as sym
@@ -21,8 +23,8 @@ def bachu(densidad, Rf, OOIP, Bo):
     :param Bo: By/Bn
     :return: Mt CO2
     """
-    Mco2=densidad * ((Rf * OOIP) / Bo)
-    return Mco2
+    Mco2=densidad * ((Rf * OOIP) * Bo)
+    return Mco2/1000000000
 def Co2densidad(df):
     # INGRESO , Datos de prueba
     xi = np.array([0, 0.1, 0.2,0.3, 0.55, 0.66, 0.74,0.87, 0.9, 1.11, 1.5,1.6,1.7,1.9, 1.98,2.1, 2.2,2.3,2.4,2.47, 2.5])
@@ -48,17 +50,18 @@ def Co2densidad(df):
 
     # para evaluación numérica
     px = sym.lambdify(x, polisimple)
-    df["densidad"] = 700
-    return df["densidad"]
+    df["Densidad Kg/m3"] = 700
+    return df["Densidad Kg/m3"]
 def bachuprob(df):
-    df["densidad"]= Co2densidad(df)
+    df["Densidad Kg/m3"]= Co2densidad(df)
     df["Bo_Norm"]= Bo()
-    df["capacidad"]= df["densidad"]*((df["rf"]) * df["ooip"]) / df["Bo_Norm"]
+    df["Capacidad Mt"]= (df["Densidad Kg/m3"]*((df["rf"]) * df["ooip"]) * df["Bo_Norm"])/1000000000
     return df
 def zhoca(df):
     df["Percentiles"]=[10, 50, 90]
     df["E"]=[0.1, 0.5, 0.9]
-    df["densidad"] = Co2densidad(df)
+    df["E aleatorio"] = random.choice(df["E"])
+    df["Densidad Kg/m3"] = Co2densidad(df)
     df["Bo_Norm"] = Bo()
-    df["Capacidad"]= df["ooip"] * df["densidad"] * df["Bo_Norm"] * df["E"]
+    df["Capacidad Mt"]= (df["ooip"] * df["Densidad Kg/m3"] * df["Bo_Norm"] * df["E aleatorio"])/1000000000
     return df

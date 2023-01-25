@@ -25,7 +25,6 @@ with st.sidebar:
         icons=["house", "gear"],
         menu_icon="cast",
     )
-    options
 
 image = Image.open("Resourse/ccus.jpg")
 st.image(image, width=100, use_column_width=True)
@@ -59,34 +58,43 @@ if options == "Home":
     st.header("""**Metodologías utilizadas:** """)
 
     st.markdown("""Esta aplicación presenta dos metodologías para el cálculo de almacenamiento geológico:""")
-    st.markdown("#Metodología de Bachu Deterministica")
-    st.markdown("#Metodología de Bachu Probabilistica")
-    st.markdown("#Metodología de Zhing y Carr")
+    st.markdown("1.- Metodología de Bachu Deterministica")
+    st.markdown("2.- Metodología de Bachu Probabilistica")
+    st.markdown("3.- Metodología de Zhing y Carr")
 
     st.header("""**Ecuaciones de cada metodología** """)
 
-    st.markdown("# Para la metodología de Bachu tanto deterministico como probabikistico se usó la siguiente ecuación:")
-    st.markdown("M_CO2t=ρ_CO2r*[(Rf*OOIP)/Bo-Viw+Vpw]")
+    st.markdown("# Para la metodología de Bachu tanto deterministico como probabilistico se usó la siguiente ecuación:")
+    st.latex("MtCO_2=ρ_CO2r*[(Rf*OOIP)/Bo-Viw+Vpw]")
     st.markdown("Donde:")
-    st.markdown("ρ_CO2r   : Densidad de CO2 en condiciones de yacimiento [kg / m³]")
-    st.markdown("Rf: Factor de recobro")
-    st.markdown("Bo: Factor volumétrico de formación del petróleo [By/Bn]")
-    st.markdown("OOIP: Volumen de petróleo in situ [m³]")
-    st.markdown("Viw: Volumen de agua inyectado [m³]")
-    st.markdown("Vpw: Volumen de agua producido [m³]")
+    st.markdown("ρ_CO2r = Densidad de CO2 en condiciones de yacimiento [kg / m³]")
+    st.markdown("Rf = Factor de recobro")
+    st.markdown("Bo = Factor volumétrico de formación del petróleo [By/Bn]")
+    st.markdown("OOIP = Volumen de petróleo in situ [m³]")
+    st.markdown("Viw = Volumen de agua inyectado [m³]")
+    st.markdown("Vpw = Volumen de agua producido [m³]")
 
     st.markdown("# Para la metodología de Zhong y Carr se usó la siguiente ecuación:")
-    st.markdown("M_CO2 = OOIP * B *〖ρCO〗_2 * E")
+    st.latex(r""" MtCO_2 = OOIP * B * ρCO_2 * E""")
+
     st.markdown("Donde:")
-    st.markdown("OOIP: Volumen de petróleo in situ [m³]")
-    st.markdown("B es el factor volumétrico de formación (m3/m3).")
-    st.markdown("〖ρCO〗_2 es la densidad del CO2 (kg/m3)")
-    st.markdown("E es el coeficiente de capacidad ")
+    st.markdown("OOIP = Volumen de petróleo in situ [m³]")
+    st.markdown("B = Es el factor volumétrico de formación (m3/m3)")
+    st.markdown("ρCO2 = Es la densidad del CO2 (kg/m3)")
+    st.markdown("E = Es el coeficiente de capacidad ")
 
     st.header("""**PLANTILLA DE INGRESO DE DATA** """)
     st.markdown("Se pide al usuario que la información subida a esta aplicación como datos para el cálculo de almacenamiento geológico se la realice en el siguiente esquema, para que la información pueda ser leida correctamente:")
-    image = Image.open("Resourse/formato1.jpg")
-    st.image(image, width=50, use_column_width=True)
+    df2 = pd.DataFrame()
+    df2["Formación"]=None
+    df2["Profundidad Km"] = None
+    df2["Rf"] = None
+    df2["OOIP m3"] = None
+    df2["Formación"]=["Formación #1","Formación #2","Formación #3","Formación #4"]
+    df2["Profundidad Km"] = ["x", "x1", "x2", "x3"]
+    df2["Rf"] = ["y","y1","y2","y3"]
+    df2["OOIP m3"] = ["z","z1","z2","z3"]
+    df2
 elif options == "Reservoir data":
     with st.sidebar:
         options = option_menu(
@@ -116,9 +124,9 @@ elif options == "Reservoir data":
             bachuprob(df)
             st.subheader("**Resultado de Capacidad de Almacenamiento Geològico**")
             st.dataframe(df)
-            fig_refi = px.bar(df, x='formacion', y='capacidad', color='formacion', range_y=[0, 1.2])
+            fig_refi = px.bar(df, x='formacion', y='Capacidad Mt', color='formacion', range_y=[0, 1.2])
             fig_refi.update_xaxes(title='Formaciones Evaluadas', visible=True)
-            fig_refi.update_yaxes(autorange=True, title='Capacidad de almacenamiento de CO2',
+            fig_refi.update_yaxes(autorange=True, title='Capacidad de almacenamiento de CO2 en Mt',
                                   visible=True, showticklabels=True)
             fig_refi.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
                                    xaxis=dict(tickmode='linear', dtick=1))
@@ -131,7 +139,7 @@ elif options == "Reservoir data":
             st.dataframe(df1)
             st.subheader("**Mapa de los campos estudiados:**")
             st.map(df1)
-            st.success(f"{field}: {store:.3f} Mt" for field, store in zip(df["formacion"], df["capacidad"]))
+            st.success(f"{field}: {store:.3f} Mt" for field, store in zip(df["formacion"], df["Capacidad Mt"]))
         elif metodo == "Zhong y Carr":
             st.subheader("**Método de Zhong y Carr**")
             upload_file = st.file_uploader("Sube tu documento csv:")
@@ -141,9 +149,9 @@ elif options == "Reservoir data":
             zhoca(df)
             st.subheader("**Resultado de Capacidad de Almacenamiento Geològico**")
             st.dataframe(df)
-            fig_refi = px.bar(df, x='formacion', y='Capacidad', color='formacion', range_y=[0, 1.2])
+            fig_refi = px.bar(df, x='formacion', y='Capacidad Mt', color='formacion', range_y=[0, 1.2])
             fig_refi.update_xaxes(title='Formaciones Evaluadas', visible=True)
-            fig_refi.update_yaxes(autorange=True, title='Capacidad de almacenamiento de CO2',
+            fig_refi.update_yaxes(autorange=True, title='Capacidad de almacenamiento de CO2 en Mt',
                                   visible=True, showticklabels=True)
             fig_refi.update_layout(template="plotly_dark", width=800, height=600, showlegend=True,
                                    xaxis=dict(tickmode='linear', dtick=1))
